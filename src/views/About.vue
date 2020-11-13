@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h3>New URL</h3>
+    <h3 class="titles">New URL</h3>
 
 <!-- 
     <form action="" @submit.prevent="addUrl(url)">

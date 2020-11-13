@@ -16,28 +16,7 @@
       <div style="height: 10px"></div>
       <h3 class="mb-2"><strong>Reading</strong></h3>
     </div>
-    <!-- 
-    <div v-if="write">
-      <div class="container border text-justify">
-        <h3 class="">Urls to send</h3>
-        <div v-for="(url, index) of toSend" :key="index">
-          <span>{{ url }}</span>
-        </div>
-      </div>
-      <div class="mt-3 container border text-justify">
-        <h3>repeated urls</h3>
-        <div v-for="(url, index) of repeats" :key="index">
-          <span>{{ url }}</span>
-        </div>
-      </div>
 
-      <div class="mt-3 container border text-justify">
-        <h3>Incorrects urls</h3>
-        <div v-for="(url, index) of incorrects" :key="index">
-          <span>{{ url }}</span>
-        </div>
-      </div>
-    </div> -->
 
     <div class="accordion text-left container mx-auto" role="tablist" v-if="write">
       <b-card no-body class="mb-1">
@@ -136,15 +115,15 @@ export default {
   },
   methods: {
     readTxtFile(ev) {
-      this.reading = true;
-      const file = ev.target.files[0];
+
       // console.log(file);
+      const file = ev.target.files[0];
       if (file.type != "text/plain") {
-        alert("Formato de archivo incorrecto");
+        this.showModal("Formato de archivo incorrecto")
         return "";
       }
+      this.reading = true;
       const reader = new FileReader();
-
       reader.onload = (e) => {
         this.$emit("load", e.target.result);
         this.textContent = e.target.result;
@@ -184,6 +163,16 @@ export default {
           console.log(response);
         });
     },
+        showModal(msg){
+
+          this.$bvModal.msgBoxOk(msg)
+          .then(value => {
+            this.boxOne = value
+          })
+          .catch(err => {
+            // An error occurred
+          })
+    }
   },
 };
 </script>

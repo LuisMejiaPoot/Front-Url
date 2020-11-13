@@ -12,6 +12,7 @@
 
 <script>
 import {mapActions} from 'vuex';
+require('@/assets/css/custom.css')
 export default {
   methods:{
     ...mapActions(['leerToken'])
@@ -20,8 +21,14 @@ export default {
   }
 }
 </script>
-
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital@1&display=swap');
+
+</style>
+<style>
+/* @import './assets/css/custom.css'; */
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
