@@ -3,8 +3,10 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
 
-import store from '../store'
-Vue.use(VueRouter)
+import { store } from '../store/index.js';
+
+
+Vue.use(VueRouter,store);
 
 const routes = [
   {
@@ -37,6 +39,13 @@ const routes = [
     component:()=>import(/* webpackChunkName: "urlBulk" */  '@/views/UrlBulk.vue'),meta:{
       rutaEsProtegida:true
     }
+  },
+  {
+    path:'/url/:id',
+    name:'url',
+    component:()=>import(/* webpackChunkName: "url" */  '@/views/updateUrl.vue'),meta:{
+      rutaEsProtegida:true
+    }
   }
 ]
 
@@ -49,8 +58,8 @@ const router = new VueRouter({
 router.beforeEach( (to,from,next) => {
 const rutaEsProtegida = to.matched.some(item =>item.meta.rutaEsProtegida)
 // mensaje = (rutaEsProtegida) ? "es protegida" :  " no es protegida"
-
-if (rutaEsProtegida && store.state.token  === null) {
+ // store.state.token
+if (rutaEsProtegida && localStorage.getItem('token')  === null) {
   next('/')
 }else{
   next()

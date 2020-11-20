@@ -8,17 +8,23 @@ Vue.use(Vuex,router,VueRouter)
 export default new Vuex.Store({
   state: {
     token:null,
+    loading:false
   },
   mutations: {
     setToken(state,payLoad){
       state.token = payLoad
       
+    },
+    loadingLogin(state,payLoad){
+      state.loading = payLoad
     }
   },
+  // https://www.youtube.com/watch?v=rncY1tlWShM
   actions: {
     // las acciones llaman a las mutaciones
     async login({commit},usuario){
-      // try {
+        // commit('loadingLogin',true)
+        this.state.loading= true;
         const res =  await fetch('https://api-node-url.herokuapp.com/api/user/login',{
           method:'POST',
           headers:{
@@ -27,16 +33,16 @@ export default new Vuex.Store({
           body:JSON.stringify(usuario)
         })
         const respDB = await res.json();
-        console.log(respDB)
         if (respDB.error == null) {
           commit('setToken',respDB.data.token)
           localStorage.setItem('token',respDB.data.token)
           // this.$router.push({ name: 'Urls' })
           router.push('/urls');
-          // this.$route.push({ path: '/urls' })
+         
           
         }
 
+        this.state.loading= false;
       // } catch (error) {
       //   console.log(error)
       // }

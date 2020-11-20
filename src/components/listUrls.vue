@@ -4,12 +4,8 @@
 
     <!-- <button @click='callUrls'>click</button> -->
     <div class="col-lg-11 mx-auto">
-      <b-pagination
-        v-model="actual"
-        :total-rows="totales"
-        :per-page="porPagina"
-        aria-controls="url-table"
-      ></b-pagination>
+      <b-pagination v-model="actual" :total-rows="totales" :per-page="porPagina" aria-controls="url-table">
+      </b-pagination>
 
       <!-- <p class="mt-3">Current Page: {{ actual }}</p> -->
       <div v-if="loading">
@@ -18,35 +14,19 @@
         <h3>Loading</h3>
       </div>
       <div v-if="!loading">
-        <b-table
-          striped
-          :items="urls"
-          :fields="fields"
-          responsive="sm"
-          id="url-table"
-          :per-page="porPagina"
-          :current-page="actual"
-        >
+        <b-table striped :items="urls" :fields="fields" responsive="sm" id="url-table" :per-page="porPagina"
+          :current-page="actual">
           <template #cell(shortUrl)="data" class="text-danger">
             <a :href="`${data.value}`" target="_blank">{{ data.value }}</a>
           </template>
 
           <template #cell(longUrl)="data">
-            <a :href="`${data.value}`" :title="`${data.value}`" class="btn-link"
-              >Url original</a
-            >
+            <a :href="`${data.value}`" :title="`${data.value}`" class="btn-link">Url original</a>
           </template>
 
           <template #cell(actions)="data">
-            <b-button size="sm" class="mr-1" variant="primary">
-              Update
-            </b-button>
-            <b-button
-              size="sm"
-              class="mr-1"
-              variant="danger"
-              @click="deleteRow(data.item.id)"
-            >
+            <b-button size="sm" class="mr-1" variant="primary" :to="{name:'url',params:{id: `${data.item.id}` } }">Update</b-button>
+            <b-button size="sm" class="mr-1" variant="danger" @click="deleteRow(data.item.id)">
               Delete
             </b-button>
             <!-- <b-button size="sm" @click="row.toggleDetails">
@@ -106,7 +86,7 @@ export default {
     async deleteRow(id) {
       const respModal = false;
       await this.$bvModal
-        .msgBoxConfirm("Are you sure?")
+        .msgBoxConfirm("Do you want to delete this is url?")
         .then((value) => {
           this.confirModal = value;
         })
@@ -116,7 +96,7 @@ export default {
 
       const urlslist = this.urls;
       const deleteUrl = await fetch(
-        "https://api-node-url.herokuapp.com/api/url/deleteUrl",
+        process.env.VUE_APP_API_URL+"/url/deleteUrl",
         {
           method: "POST",
           headers: {
@@ -141,13 +121,13 @@ export default {
             });
             urlslist.splice(id, 1);
             this.urls = urlslist;
-            this.$router.push({name:"UrlBulk"})
+            // this.$router.push({name:"UrlBulk"})
           }
         });
     },
       async callUrls() {
       const urls = await fetch(
-        "https://api-node-url.herokuapp.com/api/url/allUrl",
+        process.env.VUE_APP_API_URL+"/url/allUrl",
         {
           method: "POST",
           headers: {

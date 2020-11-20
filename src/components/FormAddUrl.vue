@@ -32,19 +32,36 @@
         <div class="data_response" v-if="data_response.error == null">
           <div class="container">
             <div class="mt-5"></div>
-            <div class="d-flex justify-content-center flex-column align-items-center">
-              <label for="range-1" ><strong >Url nueva</strong></label>
-              <a class="text-link" v-bind:href="'' + data_response.url_new" target="_blank">{{ data_response.url_new }}</a>
+            <div
+              class="d-flex justify-content-center flex-column align-items-center"
+            >
+              <label for="range-1"><strong>Url nueva</strong></label>
+              <a
+                class="text-link"
+                v-bind:href="'' + data_response.url_new"
+                target="_blank"
+                >{{ data_response.url_new }}</a
+              >
             </div>
           </div>
         </div>
       </div>
     </div>
-     <b-modal ref="my-modal" hide-footer title="">
+    <!-- :title="`${data_response.message }`" -->
+    <b-modal ref="my-modal" hide-footer title="Register for Url">
       <div class="d-block text-center">
-        <h5 style="font-family: 'Oswald', sans-serif;" v-bind:class="{'text-primary' : data_response.error === 'repeat','text-danger':data_response.error,'text-success':!data_response.error}">{{data_response.message}}</h5>
-        <br>
-        
+        <!-- <h5
+          style="font-family: 'Oswald', sans-serif"
+          v-bind:class="{
+            'text-primary': data_response.error === 'repeat',
+            'text-danger': data_response.error,
+            'text-success': !data_response.error,
+          }"
+        >
+          {{ data_response.message }}
+        </h5>
+        <br /> -->
+
         <div v-if="!data_response.error">
           <font-awesome-icon
             icon="check-circle"
@@ -54,8 +71,12 @@
         </div>
 
         <div v-else>
-              <font-awesome-icon  icon="times" size="4x" class="text-danger" />
+          <font-awesome-icon icon="times" size="4x" class="text-danger" />
         </div>
+        <br />
+        <h5 class="text-center">{{ data_response.message }}</h5>
+        <br />
+        <b-button @click="hideModal()" ref="btnShow">Aceptar</b-button>
       </div>
     </b-modal>
   </div>
@@ -90,9 +111,12 @@ export default {
     ...mapState(["token"]),
   },
   methods: {
-     showModalRepeats() {
-        this.$refs['my-modal'].show()
-      },
+    showModalRepeats() {
+      this.$refs["my-modal"].show();
+    },
+    hideModal() {
+      this.$refs["my-modal"].hide();
+    },
     async addUrl(url) {
       this.data_response.message = "";
       this.data_response.error = "";
@@ -109,7 +133,9 @@ export default {
               "Content-Type": "application/json",
               "auth-token": this.token,
             },
-            body: JSON.stringify({ longUrl: url.path }),
+            body: JSON.stringify({
+              longUrl: url.path,
+            }),
           }
         )
           .then((response) => response.json())
@@ -121,13 +147,12 @@ export default {
             this.data_response.error = response.error;
             if (response.error !== false) {
               // alert("repetido")
-              this.showModalRepeats()
+              this.showModalRepeats();
+              this.url.path = "";
               return "";
             }
-            
-            
+
             this.data_response.url_new = response.url.shortUrl;
-            
           });
       } catch (error) {}
     },

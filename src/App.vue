@@ -4,7 +4,8 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">Add Url</router-link> |
       <router-link to="/urls">Urls</router-link> |
-      <router-link to="/urlBulk">Upload File</router-link>
+      <router-link to="/urlBulk">Upload File</router-link> |
+      <router-link to="/url/10">URL</router-link>
     </div>
     <router-view/>
   </div>
