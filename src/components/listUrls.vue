@@ -21,7 +21,7 @@
           </template>
 
           <template #cell(longUrl)="data">
-            <a :href="`${data.value}`" :title="`${data.value}`" class="btn-link">Url original</a>
+            <a :href="`${data.value}`" :title="`${data.value}`" target="_alt" class="btn-link">Url original</a>
           </template>
 
           <template #cell(actions)="data">
